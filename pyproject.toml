@@ -14,7 +14,7 @@ readme = "README.md"
 dependencies = {file = ["requirements.txt"]}
 
 [project.scripts]
-chatbot = "mediwise_chatbot.main:entry"
+chatbot = "mediwise_chatbot.main:entry_local"
 
 [tool.setuptools]
 packages = ["mediwise_chatbot"]
