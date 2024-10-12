@@ -1,12 +1,12 @@
 import os
 from dotenv import load_dotenv
-from .utils import chat_complete_messages
-from .constants import *
+from mediwise_chatbot.utils import chat_complete_messages
+from mediwise_chatbot import constants as C
 
 
 def entry():
     chatHistory = []
-    chatHistory.append(chatContext[0])
+    chatHistory.append(C.chatContext[0])
 
     while True:
         response_message_content = chat_complete_messages(chatHistory, 0.2)
