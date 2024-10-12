@@ -1,7 +1,25 @@
 # MediWise Chatbot
-Medical Chat Assistant built using LLM.
+Medical Chat Assistant.
 
-# How to Use the Bot
+Built using:
+
+`OpenAI` - LLM
+
+`Fastapi` - framework for building API's.
+
+`Jinja2` - templating for creating HTML.
+
+`Bootstrap 5` - html, css and javascript toolkit for developing UI.
+
+# How to Use the Bot from Browser
+- Clone the repo to your machine
+- Open terminal and then `cd` into the repo.
+- From the terminal execute `python -m pip install -e .` to install the package on your machine.
+- Set the `OPENAI_API_KEY` value.
+- execute `uvicorn mediwise_chatbot.main:app --host 127.0.0.1 --port 8001 --reload`
+- uvicorn will host the application at `http://127.0.0.1:8001`
+
+# How to Use the Bot from Terminal
 - Clone the repo to your machine
 - Open terminal and then `cd` into the repo.
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
