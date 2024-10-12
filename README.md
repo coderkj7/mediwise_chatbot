@@ -20,4 +20,4 @@ Medical Chat Assistant built using LLM.
 Do not commit your api keys or any personal details.
 
 # Resources
-- [Planning and User Stories ]([(https://lucid.app/lucidspark/40dc780b-0a4b-4243-ae61-28290dc36111/edit?invitationId=inv_a7c6313a-3322-4a40-92af-773b961cd35c&page=0_0#)])
+- [Planning and User Stories](https://lucid.app/lucidspark/40dc780b-0a4b-4243-ae61-28290dc36111/edit?invitationId=inv_a7c6313a-3322-4a40-92af-773b961cd35c&page=0_0#)
