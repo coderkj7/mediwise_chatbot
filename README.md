@@ -15,7 +15,8 @@ Built using:
 - Clone the repo to your machine
 - Open terminal and then `cd` into the repo.
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
-- Set the `OPENAI_API_KEY` value.
+- Create a .env file in the root directory of the repo
+- In the first line of the .env file, put put your API key insteadf of `{your_key}` in `OPENAI_API_KEY={your_key}`
 - execute `uvicorn mediwise_chatbot.main:app --host 127.0.0.1 --port 8001 --reload`
 - uvicorn will host the application at `http://127.0.0.1:8001`
 
@@ -23,7 +24,8 @@ Built using:
 - Clone the repo to your machine
 - Open terminal and then `cd` into the repo.
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
-- Set the `OPENAI_API_KEY` value.
+- Create a .env file in the root directory of the repo
+- In the first line of the .env file, put put your API key insteadf of `{your_key}` in `OPENAI_API_KEY={your_key}`
 - execute `chatbot`
   
 # How to Contribute
