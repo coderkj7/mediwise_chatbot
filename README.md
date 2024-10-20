@@ -1,6 +1,8 @@
 # MediWise Chatbot
 Medical Chat Assistant.
 
+DISCLAIMER: Do not use this for actual medical advice.  This was made by computer science students for a team project.
+
 Built using:
 
 `OpenAI` - LLM
