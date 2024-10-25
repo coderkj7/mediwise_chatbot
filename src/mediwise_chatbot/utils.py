@@ -31,7 +31,6 @@ availability = {
 }
 
 availabilities = list(availability.keys())
-
 def chat_complete_messages(messages, temperature):
     # query against the model "gpt-3.5-turbo-1106"
     completion = client.chat.completions.create(
@@ -41,7 +40,7 @@ def chat_complete_messages(messages, temperature):
     )
     return completion.choices[0].message.content
 
-GPT_MODEL = "gpt-4o"
+GPT_MODEL = "gpt-4o-mini"
 @retry(wait=wait_random_exponential(multiplier=1, max=40), stop=stop_after_attempt(3))
 def chat_completion_request(messages, temperature=0, tools=None, tool_choice=None, model=GPT_MODEL):
     try:
