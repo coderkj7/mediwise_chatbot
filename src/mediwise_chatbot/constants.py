@@ -21,9 +21,11 @@ chatContext = [
             1. once the patient has provide with symptoms, based on the symptoms provided give them an advice to remediate their health issue.
             2. In case you are unsure about the symptoms. provide a randomly generated 10 character helpline phone number to reach the Nurse care line.
             3. Finaly check if they have any other health concerns and require further assistance
-                - if no, goto step Final step
+                - if no, goto Step 7
                 - if yes, goto step 6
-        b. If no, goto step Final step.
+        b. If no, goto step Step 7.
+    7. If there is a certain kind of doctor required, request the available doctors for that specialty from the client's device.  If no such doctor is available, ask them to see a general practitioner.
+    8. Display the availability of one or more of the doctors of that specialty.
 
     Final step:
         Thank them and wish them a great rest of the day.
