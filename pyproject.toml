@@ -19,3 +19,4 @@ chatbot = "mediwise_chatbot.main:entry_local"
 [tool.setuptools]
 packages = ["mediwise_chatbot"]
 package-dir = {"" = "src"}
+
