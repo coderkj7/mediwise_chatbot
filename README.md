@@ -29,7 +29,7 @@ Built using:
 - Once you open the URL above, login with the creds under the pgAdmin section in the docker compose to login.
 - Then click add server and give a `name` to the server
   ![alt text](images/image.png)
-- Switch over to the connection tab and enter these details to establish the connection to the local postgres DB. Under password enter the db password value (it is `password` , you can access it from the docker compose file as well.)
+- Switch over to the connection tab and enter these details to establish the connection to the local postgres DB. Under password enter the db password value (it is `password` , you can get it from the docker compose file as well.)
   ![alt text](images/image-1.png)
 - Once you are successfuly connected then you should be able to create tables under the `medapp` database and populate then with the test data.
 - `Note`: As you are creating tables and populating data using pgAdmin, to make spinning up the database with all the data everytime we rebuild our project and not having to rebuild the tables and populate them again, I suggest adding the sql statements to the file i created under the `sql` folder in our project.  This ensures everytime we rebuild our project we have our local database ready with all the existing data.
