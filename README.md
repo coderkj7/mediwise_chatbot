@@ -15,6 +15,21 @@ Built using:
 
 `Bootstrap 5` - html, css and javascript toolkit for developing UI.
 
+
+# Setting up Local Postgres DB
+- For setting up local `postgres` we are going to use `Docker`
+- `Pre-Req` make sure to have Docker installed on your machine
+- Execute `docker compose up -d` to install postgres DB and pgAdmin(web based UI tool for managing Postgres DB)
+- To access the postgres DB using pgAdmin goto `http://localhost:5050/`
+- Once you open the URL above, login with the creds under the pgAdmin section in the docker compose to login.
+- Then click add server and give a `name` to the server
+  ![alt text](images/image.png)
+- Switch over to the connection tab and enter these details to establish the connection to the local postgres DB. Under password enter the db password value(it is `password` , you can it from the docker compose file as well.)
+  ![alt text](images/image-1.png)
+- Once you are successfuly connected then you should be able to create tables under the `medapp` database and populate then with the test data.
+- `Note`: As you are creating tables and populating data using pgAdmin, to make spinning up the database with all the data everytime we rebuild our project and not having to rebuild the tables and populate them again, I suggest adding the sql statements to the file i created under the `sql` folder in our project.This ensures everytime we rebuild our project we have our local database ready with all the existing data.
+
+
 # How to Use the Bot from `Browser`
 - Clone the repo to your machine
 - Open terminal and then `cd` into the repo.
@@ -25,6 +40,7 @@ Built using:
 - execute `uvicorn mediwise_chatbot.main:app --host 127.0.0.1 --port 8001 --reload`
 - uvicorn will host the application at `http://127.0.0.1:8001`
 
+
 # How to Use the Bot from `Terminal`
 - Clone the repo to your machine
 - Open terminal and then `cd` into the repo.
@@ -33,7 +49,8 @@ Built using:
 - Create a .env file in the root directory of the repo
 - In the first line of the .env file, put put your API key insteadf of `{your_key}` in `OPENAI_API_KEY={your_key}`
 - execute `chatbot`
-  
+
+
 # How to `Contribute`
 
 - Create a `feature` branch from `main` .
@@ -41,13 +58,19 @@ Built using:
 - Push the `feature` to github.
 - Create a Pull Request to the `main` from the `feature` branch when your changes are fully tested and ready to be merged to `main`.
 
+
 # Maintaining `requirements.txt`
 
 If you had to install any new python package to develop a new feature then please make sure the package along with its version is included in the `requirements.txt` file. Doing this will ensure other contributors can pull the latest code, install the package locally and start the app without any issues.
 
+# Sample Chat Conversation
+
+![alt text](images/image-2.png)
+
 # `Note`
 
 Do not commit your api keys or any personal details.
+
 
 # `Resources`
 - [Planning and User Stories](https://lucid.app/lucidspark/40dc780b-0a4b-4243-ae61-28290dc36111/edit?invitationId=inv_a7c6313a-3322-4a40-92af-773b961cd35c&page=0_0#)
