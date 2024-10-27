@@ -63,6 +63,9 @@ Built using:
 
 If you had to install any new python package to develop a new feature then please make sure the package along with its version is included in the `requirements.txt` file. Doing this will ensure other contributors can pull the latest code, install the package locally and start the app without any issues.
 
+# Sample Chat Conversation
+
+![alt text](images/image-2.png)
 
 # `Note`
 

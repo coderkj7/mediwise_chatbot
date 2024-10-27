@@ -1,3 +1,5 @@
+import psycopg2
+import json
 from openai import OpenAI
 from dotenv import load_dotenv
 from tenacity import retry, wait_random_exponential, stop_after_attempt
@@ -5,7 +7,6 @@ from tenacity import retry, wait_random_exponential, stop_after_attempt
 load_dotenv()
 client = OpenAI()
 
-import json
 
 doctors = {
         "dermatologist": ["Calvin Aldrith", "Trudy Ekhart"],
@@ -32,9 +33,8 @@ availability = {
 
 availabilities = list(availability.keys())
 
-GPT_MODEL = "gpt-4o-mini"
+GPT_MODEL = "gpt-4o"
 def chat_complete_messages(messages, temperature):
-    # query against the model "gpt-3.5-turbo-1106"
     completion = client.chat.completions.create(
         model=GPT_MODEL,
         messages= messages,
@@ -66,7 +66,64 @@ def get_availability(doctor):
     """Get availability of a specific doctor"""
     return json.dumps(availability[doctor])
 
+def get_appointments(patient_id):
+    
+    try:
+        conn = psycopg2.connect("dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'")
+    except:
+        print("I am unable to connect to the database")
+
+    conn = psycopg2.connect("dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'")
+
+    # print(f"Autocommit: {conn.autocommit} and Isolation Level: {conn.isolation_level}")
+
+    # change the behavior of commit
+    conn.autocommit = True
+
+    # print(f"Autocommit: {conn.autocommit} and Isolation Level: {conn.isolation_level}")
+    conn.close()
+
+    # to use the new database we create a new connection
+    conn = psycopg2.connect("dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'")
+
+    with conn:
+
+        with conn.cursor() as curs:
+
+            try:
+                curs.execute("SELECT row_to_json(appointments) FROM appointments where patient_id=%s", [patient_id])
+
+                appointment_rows = curs.fetchall()
+
+                # print(f"{appointment_rows}")
+
+            except (Exception, psycopg2.DatabaseError) as error:
+                print(error)
+                
+    out = {}
+    for app in appointment_rows[0]:          
+        out['doctor_id'] = app['doctor_id']
+        out['appointment_time'] = app['appointment_start_ts']
+    return json.dumps(out)
+
 tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_appointments",
+            "description": "Get the current patient appointment details",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "patient_id": {
+                        "type": "string",
+                        "description": "The patient id",
+                    },
+                },
+                "required": ["patient_id"],
+            },
+        }
+    },
     {
         "type": "function",
         "function": {
@@ -83,7 +140,9 @@ tools = [
                 },
                 "required": ["specialty"],
             },
-        },
+        }
+    },
+    {
         "type": "function",
         "function": {
             "name": "get_availability",
@@ -104,26 +163,27 @@ tools = [
 ]
 
 available_functions = {
+            "get_appointments": get_appointments,
             "get_doctors": get_doctors,
             "get_availability": get_availability,
         }
 
 def tool_call(messages, response_message, tool_calls):
-    # Step 2: check if the model wanted to call a function
+
+    messages.append(response_message)  # extend conversation with assistant's reply
+
     if tool_calls:
 
-        # Step 4: send the info for each function call and function response to the model
         for tool_call in tool_calls:
             function_name = tool_call.function.name
-            #print("function name is: ", function_name)
             function_to_call = available_functions[function_name]
             function_args = json.loads(tool_call.function.arguments)
-            #print("function_args:", function_args)
             
-            function_response = function_to_call(
-                location=function_args.get("location"),
-                unit=function_args.get("unit"),
-            )
+            if function_name == 'get_appointments':
+                function_response = function_to_call(
+                    patient_id=function_args.get("patient_id"),
+                    )
+
             messages.append(
                 {
                     "tool_call_id": tool_call.id,
@@ -133,7 +193,5 @@ def tool_call(messages, response_message, tool_calls):
                 }
             )
             second_response = chat_completion_request(messages, temperature=0, tools=tools, tool_choice="auto")
-            messages.append(second_response)
-            print(second_response.choices[0].message.content)
-        
-    return messages
+            bot_response = second_response.choices[0].message.content
+    return bot_response
