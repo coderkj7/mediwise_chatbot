@@ -16,6 +16,11 @@ Built using:
 `Bootstrap 5` - html, css and javascript toolkit for developing UI.
 
 
+# Installing Docker on Windows
+- Download Docker from [the official site](https://www.docker.com/products/docker-desktop/) and run it
+- If you're not using an administrator account, run Computer Management as an administrator, navigate to Local Users and Groups\Groups\docker-users (should be near the bottom of the last directory), right-click and add your user to the group (the name is how it appears in C:\Users) ([source](https://stackoverflow.com/questions/58663920/can-i-run-docker-desktop-on-windows-without-admin-privileges))
+- You may have to restart your computer to make Docker run properly once all the prior steps are completed
+
 # Setting up Local Postgres DB
 - For setting up local `postgres` we are going to use `Docker`
 - `Pre-Req` make sure to have Docker installed on your machine
