@@ -107,6 +107,7 @@ def get_appointments(patient_id):
         out['appointment_time'] = app['appointment_start_ts']
     return json.dumps(out)
 
+# A list of functions with descriptions for the LLM to use
 tools = [
     {
         "type": "function",
