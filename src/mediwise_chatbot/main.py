@@ -27,7 +27,7 @@ async def entry(request: Request, user_input: Annotated[str, Form()]):
     chatResponses.append(user_input)
     response = chat_completion_request(chatHistory, temperature=0.2, tools=tools, tool_choice="auto")
     response_message = response.choices[0].message
-    response_message_content = response.choices[0].message.content
+    response_message_content = response_message.content
     tool_calls = response_message.tool_calls
     if tool_calls:
         response_message_content = tool_call(chatHistory, response_message, tool_calls)

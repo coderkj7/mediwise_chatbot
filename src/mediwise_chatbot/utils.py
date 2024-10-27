@@ -67,13 +67,14 @@ def get_availability(doctor):
     return json.dumps(availability[doctor])
 
 def get_appointments(patient_id):
+    connection_string = "dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'"
     
     try:
-        conn = psycopg2.connect("dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'")
+        conn = psycopg2.connect(connection_string)
     except:
         print("I am unable to connect to the database")
 
-    conn = psycopg2.connect("dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'")
+    conn = psycopg2.connect(connection_string)
 
     # print(f"Autocommit: {conn.autocommit} and Isolation Level: {conn.isolation_level}")
 
@@ -84,7 +85,7 @@ def get_appointments(patient_id):
     conn.close()
 
     # to use the new database we create a new connection
-    conn = psycopg2.connect("dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'")
+    conn = psycopg2.connect(connection_string)
 
     with conn:
 
