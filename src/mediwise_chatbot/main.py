@@ -22,7 +22,6 @@ async def page(request: Request):
 
 @app.post("/", response_class=HTMLResponse)
 async def entry(request: Request, user_input: Annotated[str, Form()]):
-
     chatHistory.append({'role':'user', 'content':f"{user_input}"})
     chatResponses.append(user_input)
     response = chat_completion_request(chatHistory, temperature=0.2, tools=tools, tool_choice="auto")
@@ -50,11 +49,11 @@ def entry_local():
             response_message_content = response.choices[0].message.content
         print("ChatBot: ", response_message_content)
         chatHistory.append({'role': 'assistant', 'content': f"{response_message_content}"})
-    
+
         if chatHistory[-1]['content'].endswith('day!') or\
             chatHistory[-1]['content'].lower() == 'stop':
             break
-    
+
         user_input = input("User Input:")
         print("User: ", user_input)
         chatHistory.append({'role':'user', 'content':f"{user_input}"})
