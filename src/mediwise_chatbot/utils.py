@@ -174,11 +174,22 @@ def tool_call(messages, response_message, tool_calls):
             function_name = tool_call.function.name
             function_to_call = available_functions[function_name]
             function_args = json.loads(tool_call.function.arguments)
+            function_response = "you should not be seeing this" # To prevent it from accessing the variable before initialization
 
             if function_name == 'get_appointments':
                 function_response = function_to_call(
                     patient_id=function_args.get("patient_id"),
                     )
+            elif function_name == 'get_doctors':
+                function_response = function_to_call(
+                    specialty=function_args.get("specialty"),
+                    )
+            elif function_name == 'get_availability':
+                function_response = function_to_call(
+                    doctor=function_args.get("doctor"),
+                    )
+
+            print(function_response)
 
             messages.append(
                 {
@@ -188,6 +199,12 @@ def tool_call(messages, response_message, tool_calls):
                     "content": function_response,
                 }
             )
+
             second_response = chat_completion_request(messages, temperature=0, tools=tools, tool_choice="auto")
+
+            if second_response == "Unable to generate ChatCompletion response":
+                return "Not found"
+
             bot_response = second_response.choices[0].message.content
+
     return bot_response
