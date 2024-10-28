@@ -7,7 +7,6 @@ from tenacity import retry, wait_random_exponential, stop_after_attempt
 load_dotenv()
 client = OpenAI()
 
-
 doctors = {
         "dermatologist": ["Calvin Aldrith", "Trudy Ekhart"],
         "otolaryngologist": ["Milford Trinter", "Henry Tallister"],
@@ -67,13 +66,14 @@ def get_availability(doctor):
     return json.dumps(availability[doctor])
 
 def get_appointments(patient_id):
-    
+    connection_string = "dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'"
+
     try:
-        conn = psycopg2.connect("dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'")
+        conn = psycopg2.connect(connection_string)
     except:
         print("I am unable to connect to the database")
 
-    conn = psycopg2.connect("dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'")
+    conn = psycopg2.connect(connection_string)
 
     # print(f"Autocommit: {conn.autocommit} and Isolation Level: {conn.isolation_level}")
 
@@ -84,28 +84,24 @@ def get_appointments(patient_id):
     conn.close()
 
     # to use the new database we create a new connection
-    conn = psycopg2.connect("dbname='medapp' user='postgres' host='0.0.0.0' password='password' port='5432'")
+    conn = psycopg2.connect(connection_string)
 
     with conn:
-
         with conn.cursor() as curs:
-
             try:
                 curs.execute("SELECT row_to_json(appointments) FROM appointments where patient_id=%s", [patient_id])
-
                 appointment_rows = curs.fetchall()
-
                 # print(f"{appointment_rows}")
-
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
-                
+
     out = {}
     for app in appointment_rows[0]:          
         out['doctor_id'] = app['doctor_id']
         out['appointment_time'] = app['appointment_start_ts']
     return json.dumps(out)
 
+# A list of functions with descriptions for the LLM to use
 tools = [
     {
         "type": "function",
@@ -178,10 +174,19 @@ def tool_call(messages, response_message, tool_calls):
             function_name = tool_call.function.name
             function_to_call = available_functions[function_name]
             function_args = json.loads(tool_call.function.arguments)
-            
+            function_response = "you should not be seeing this" # To prevent it from accessing the variable before initialization
+
             if function_name == 'get_appointments':
                 function_response = function_to_call(
                     patient_id=function_args.get("patient_id"),
+                    )
+            elif function_name == 'get_doctors':
+                function_response = function_to_call(
+                    specialty=function_args.get("specialty"),
+                    )
+            elif function_name == 'get_availability':
+                function_response = function_to_call(
+                    doctor=function_args.get("doctor"),
                     )
 
             messages.append(
@@ -192,6 +197,12 @@ def tool_call(messages, response_message, tool_calls):
                     "content": function_response,
                 }
             )
+
             second_response = chat_completion_request(messages, temperature=0, tools=tools, tool_choice="auto")
+
+            if second_response == "Unable to generate ChatCompletion response":
+                return "Not found"
+
             bot_response = second_response.choices[0].message.content
+
     return bot_response
