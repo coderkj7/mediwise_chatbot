@@ -189,8 +189,6 @@ def tool_call(messages, response_message, tool_calls):
                     doctor=function_args.get("doctor"),
                     )
 
-            print(function_response)
-
             messages.append(
                 {
                     "tool_call_id": tool_call.id,
