@@ -15,6 +15,8 @@ Built using:
 
 `Bootstrap 5` - html, css and javascript toolkit for developing UI.
 
+`Pinecone VectorDB` - Used for storing KnowledgeBase embedding for context search based on simillarity. `Note`: Before using the app make sure to create Pinecone account and create your Apikey.
+
 
 # Installing Docker on Windows
 - Download Docker from [the official site](https://www.docker.com/products/docker-desktop/) and run it
@@ -41,7 +43,8 @@ Built using:
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
 - If that doesn't work, execute `python -m pip install --upgrade pip` and try again
 - Create a .env file in the root directory of the repo
-- In the first line of the .env file, put put your API key insteadf of `{your_key}` in `OPENAI_API_KEY={your_key}`
+- In the first line of the .env file, put put your API key instead of `{your_key}` in `OPENAI_API_KEY={your_key}`
+- In the second line of the .env file, put put your API key instead of `{your_key}` in `PINECONE_API_KEY={your_key}`
 - execute `uvicorn mediwise_chatbot.main:app --host 127.0.0.1 --port 8001 --reload`
 - uvicorn will host the application at `http://127.0.0.1:8001`
 
@@ -52,7 +55,8 @@ Built using:
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
 - If that doesn't work, execute `python -m pip install --upgrade pip` and try again
 - Create a .env file in the root directory of the repo
-- In the first line of the .env file, put put your API key insteadf of `{your_key}` in `OPENAI_API_KEY={your_key}`
+- In the first line of the .env file, put put your API key instead of `{your_key}` in `OPENAI_API_KEY={your_key}`
+- In the second line of the .env file, put put your API key instead of `{your_key}` in `PINECONE_API_KEY={your_key}`
 - execute `chatbot`
 
 
