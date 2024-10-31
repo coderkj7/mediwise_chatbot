@@ -255,9 +255,7 @@ def tool_call(messages, response_message, tool_calls):
             elif function_name == 'table_dml':
                 function_response = function_to_call(
                     dml=function_args.get("dml"),
-                    )
-            print(function_response)
-            print(function_response)
+                )
             messages.append(
                 {
                     "tool_call_id": tool_call.id,
