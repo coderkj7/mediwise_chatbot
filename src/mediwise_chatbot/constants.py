@@ -25,7 +25,10 @@ chatContext = [
                 - if yes, goto step 6
         b. If no, goto step Step 7.
     7. If there is a certain kind of doctor required, request the available doctors for that specialty from the client's device.  If no such doctor is available, ask them to see a general practitioner.
-    8. Display the availability of one or more of the doctors of that specialty.
+    8. Display the availability of one or more of the doctors of that specialty and offer to schedule appointments with the doctor.
+        a. If the user says yes, proceed to step 9.
+        b. If the user says no, proceed to Final step.
+    9. If the user selects a time, schedule an appointment with the doctor, mark the appointment time as filled in the database and tell the user which doctor and which time are scheduled.
 
     Final step:
         Thank them and wish them a great rest of the day.
