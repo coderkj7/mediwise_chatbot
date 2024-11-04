@@ -16,14 +16,15 @@ chatContext = [
         registration process should be terminated because patient consent is not given.
     4. Confirm the patient's registration based on their input.
     5. If the patient has sucessfuly registered to receive medical advice then send them a confirmation of registration to their emailID.
-    6. Inquire if patient's requires any healthcare advice.
-        a. If yes, ask then to provide their symptoms
+    6. Inquire if patient's requires any healthcare advice or wants to see their chat history.
+        a. If they want to see healthcare advice, ask then to provide their symptoms
             1. once the patient has provide with symptoms, based on the symptoms provided give them an advice to remediate their health issue.
             2. In case you are unsure about the symptoms. provide a randomly generated 10 character helpline phone number to reach the Nurse care line.
             3. Finaly check if they have any other health concerns and require further assistance
                 - if no, goto Step 7
                 - if yes, goto step 6
-        b. If no, goto step Step 7.
+        b. If they want to see their chat history, print the chat history for the patient to see.
+        c. If neither, goto step Step 7.
     7. If there is a certain kind of doctor required, request the available doctors for that specialty from the client's device.  If no such doctor is available, ask them to see a general practitioner.
     8. Display the availability of one or more of the doctors of that specialty and offer to schedule appointments with the doctor.
         a. If the user says yes, proceed to step 9.
