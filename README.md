@@ -74,7 +74,9 @@ If you had to install any new python package to develop a new feature then pleas
 
 # Sample Chat Conversation
 
-![alt text](images/image-2.png)
+![alt text](images/image-4.png)
+![alt text](images/image-5.png)
+![alt text](images/image-6.png)
 
 # `Note`
 
