@@ -40,6 +40,9 @@ Built using:
 # How to Use the Bot from `Browser`
 - Clone the repo to your machine
 - Open terminal and then `cd` into the repo.
+- Do `python -V` with a capital V to verify you are on version 3.10 or later.  If not, uninstall old versions or change the PATH variables
+- Make a virtual environment in a folder called venv using `python -m venv .\venv`
+- Start the venv it using `.\venv\Scripts\activate`
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
 - If that doesn't work, execute `python -m pip install --upgrade pip` and try again
 - Create a .env file in the root directory of the repo
@@ -52,6 +55,9 @@ Built using:
 # How to Use the Bot from `Terminal`
 - Clone the repo to your machine
 - Open terminal and then `cd` into the repo.
+- Do `python -V` with a capital V to verify you are on version 3.10 or later.  If not, uninstall old versions or change the PATH variables
+- Make a virtual environment in a folder called venv using `python -m venv .\venv`
+- Start the venv using `.\venv\Scripts\activate`
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
 - If that doesn't work, execute `python -m pip install --upgrade pip` and try again
 - Create a .env file in the root directory of the repo
