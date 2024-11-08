@@ -40,18 +40,24 @@ Built using:
 # How to Use the Bot from `Browser`
 - Clone the repo to your machine
 - Open terminal and then `cd` into the repo.
+- Do `python -V` with a capital V to verify you are on version 3.10 or later.  If not, uninstall old versions or change the PATH variables
+- Make a virtual environment in a folder called venv using `python -m venv .\venv`
+- Start the venv it using `.\venv\Scripts\activate`
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
 - If that doesn't work, execute `python -m pip install --upgrade pip` and try again
 - Create a .env file in the root directory of the repo
 - In the first line of the .env file, put put your API key instead of `{your_key}` in `OPENAI_API_KEY={your_key}`
 - In the second line of the .env file, put put your API key instead of `{your_key}` in `PINECONE_API_KEY={your_key}`
-- execute `uvicorn mediwise_chatbot.main:app --host 127.0.0.1 --port 8001 --reload`
+- execute `python -m uvicorn mediwise_chatbot.main:app --host 127.0.0.1 --port 8001 --reload`
 - uvicorn will host the application at `http://127.0.0.1:8001`
 
 
 # How to Use the Bot from `Terminal`
 - Clone the repo to your machine
 - Open terminal and then `cd` into the repo.
+- Do `python -V` with a capital V to verify you are on version 3.10 or later.  If not, uninstall old versions or change the PATH variables
+- Make a virtual environment in a folder called venv using `python -m venv .\venv`
+- Start the venv using `.\venv\Scripts\activate`
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
 - If that doesn't work, execute `python -m pip install --upgrade pip` and try again
 - Create a .env file in the root directory of the repo
