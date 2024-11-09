@@ -44,7 +44,7 @@ Built using:
 - Make a virtual environment in a folder called .venv using `python -m venv .\.venv`
 - Start the venv it using `.\.venv\Scripts\activate`
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
-- If that doesn't work, execute `python -m pip install --upgrade pip` and try again
+- If that doesn't work, execute `python -m pip install --upgrade pip` or `python -m pip install pip==24.2` and try again
 - Create a .env file in the root directory of the repo
 - In the first line of the .env file, put put your API key instead of `{your_key}` in `OPENAI_API_KEY={your_key}`
 - In the second line of the .env file, put put your API key instead of `{your_key}` in `PINECONE_API_KEY={your_key}`
@@ -59,7 +59,7 @@ Built using:
 - Make a virtual environment in a folder called .venv using `python -m venv .\.venv`
 - Start the venv using `.\.venv\Scripts\activate`
 - From the terminal execute `python -m pip install -e .` to install the package on your machine.
-- If that doesn't work, execute `python -m pip install --upgrade pip` and try again
+- If that doesn't work, execute `python -m pip install --upgrade pip` or `python -m pip install pip==24.2` and try again
 - Create a .env file in the root directory of the repo
 - In the first line of the .env file, put put your API key instead of `{your_key}` in `OPENAI_API_KEY={your_key}`
 - In the second line of the .env file, put put your API key instead of `{your_key}` in `PINECONE_API_KEY={your_key}`
