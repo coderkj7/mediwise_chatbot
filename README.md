@@ -35,7 +35,12 @@ Built using:
   ![alt text](images/image-1.png)
 - Once you are successfuly connected then you should be able to create tables under the `medapp` database and populate then with the test data.
 - `Note`: As you are creating tables and populating data using pgAdmin, to make spinning up the database with all the data everytime we rebuild our project and not having to rebuild the tables and populate them again, I suggest adding the sql statements to the file i created under the `sql` folder in our project.  This ensures everytime we rebuild our project we have our local database ready with all the existing data.
-
+- To take latest changes made to the `dbinit.sql`, make sure to follow these steps below
+   - execute `docker compose down` this will remove the database and pgAdmin containers
+   - execute `docker images` then look for the image for `mediwise_chatbot-database` and get the imageID.
+   - execute `docker rmi <imageID>`, this will remove the image we have created before using the docker compose
+   - execute `docker compose up -d` to create the postgres and pgAdmin containers with the latest dbinit.sql file.
+ 
 
 # How to Use the Bot from `Browser`
 - Clone the repo to your machine
@@ -84,6 +89,14 @@ If you had to install any new python package to develop a new feature then pleas
 ![alt text](images/image-5.png)
 ![alt text](images/image-6.png)
 
+Existing patient conversation when giving consent to receive medical advice.
+![alt text](images/image-7.png)
+
+Next time when the same patient is having a conversation 
+![alt text](images/image-8.png)
+
+When a patient who is not in the system and would like to use the chatbot
+![alt text](images/image-9.png)
 # `Note`
 
 Do not commit your api keys or any personal details.
