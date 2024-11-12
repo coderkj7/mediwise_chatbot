@@ -4,6 +4,7 @@ import re
 import pinecone
 import time
 import os
+import random
 from openai import OpenAI
 from dotenv import load_dotenv
 from tenacity import retry, wait_random_exponential, stop_after_attempt
@@ -19,7 +20,6 @@ embed_model = "text-embedding-3-small"
 index_name = 'mediwise-kb'
 delimiter = "####"
 limit = 8000  #set the limit of knowledge base words, leave some space for chat history and query.
-
 
 GPT_MODEL = "gpt-4o"
 def chat_complete_messages(messages, temperature):
@@ -58,7 +58,6 @@ def get_postgres_conn():
     return conn
 
 
-
 def get_appointments(medical_record_number):
     conn = get_postgres_conn() # get postgres conn
     with conn:
@@ -77,6 +76,33 @@ def get_appointments(medical_record_number):
             out['appointment_time'] = app['appointment_start_ts']
     return json.dumps(out)
 
+def get_existing_patient_medical_record_numbers():
+    conn = get_postgres_conn() # get postgres conn
+    with conn:
+        with conn.cursor() as curs:
+            try:
+                curs.execute("SELECT row_to_json(patients) FROM patients")
+                patient_rows = curs.fetchall()
+                # print(f"{appointment_rows}")
+            except (Exception, psycopg2.DatabaseError) as error:
+                print(error)
+    
+    mrn_ret = []
+    out = {}
+    print(patient_rows)
+    if len(patient_rows) != 0:
+        for app in patient_rows:        
+            out[app[0]['medical_record_number']] = True
+            mrn_ret.append(out)
+    print(mrn_ret)
+    return json.dumps(mrn_ret)
+
+def generate_patient_medical_record_numbers(first_name, last_name):
+    name = first_name + last_name
+    new_mrn = 'MRN' + str(random.randint(10,99)) + ''.join([random.choice(name) for i in range(4)])
+    out = {}   
+    out['generated_medical_record_number'] = new_mrn
+    return json.dumps(out)
 
 def table_dml(dml):
     conn = get_postgres_conn()
@@ -92,6 +118,16 @@ def table_dml(dml):
                 # Only fetch results for SELECT queries
                 if dml.strip().lower().startswith('select'):
                     result = curs.fetchall()
+                    out = {}
+                    if len(result) == 0:
+                        result = {"return": "No information returned by the query"}
+                        return result
+                    else:
+                        if len(result) != 0:
+                            for app in result[0]:
+                                print(app)       
+                                out['result'] = app
+                                return json.dumps(out)
                 else:
                     result = None
 
@@ -103,6 +139,7 @@ def table_dml(dml):
         return result
     else:
         final_res = {"code": error_code, "res": result}
+        print(final_res)
         return final_res
 
 
@@ -129,7 +166,7 @@ tools = [
         "type": "function",
         "function": {
             "name": "table_dml",
-            "description": "Select update insert or delete into appointments table by SQL",
+            "description": "Select update insert or delete into appointments or patients table by SQL",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -145,12 +182,29 @@ tools = [
                             appointment_start_ts timestamp NOT NULL,
                             created_ts timestamp NOT NULL                       
                       ####  
+                      Table name: patients
+                      #### column name and type:
+                            patient_id SERIAL PRIMARY KEY,
+                            patient_name VARCHAR(50) NOT NULL,
+                            date_of_birth DATE NOT NULL,
+                            medical_record_number VARCHAR(50) NOT NULL,
+                            symptoms VARCHAR(50) NULL,
+                            doctor_type_requested  VARCHAR(50) NULL,
+                            chat_summary TEXT,
+                            consent BOOLEAN DEFAULT False
+                        ####
                         when creating a new appointment record:
-                        a) make sure to populate medical record number column with 'MRN' in the given medical record number string and current local timestamp for the created_ts column
-                        in the appointments table  
-                        b) Also check if the patient already has an appointment with the same doctor before 
-                        creating a new appointment
-                        c) If an appointment exists for the patient with the same doctor then update the appointment start ts and created ts columns           
+                            a) make sure to populate medical record number column with 'MRN' in the given medical record number string and current local timestamp for the created_ts column
+                               in the appointments table  
+                            b) Also check if the patient already has an appointment with the same doctor before 
+                               creating a new appointment
+                            c) If an appointment exists for the patient with the same doctor then update the appointment start ts and created ts columns  
+                        When checking for patient consent in the patients table
+                            a) check for the value contained in the column consent in the patients table.
+                            b) if the consent column for the patient is True then the patient has already given the consent.
+                        when inserting a new patient record into patients table
+                            a) use the generated medical record number, given patient date of birth and concatenate first name and last name to make patient name.
+                            b) If the patient medical record number already exists then update the row instead of inserting
                         """,
                     },
                     
@@ -159,11 +213,33 @@ tools = [
             }
         }
     }, 
+    {
+        "type": "function",
+        "function": {
+            "name": "generate_patient_medical_record_numbers",
+            "description": "Generate new patient medical record number",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "description": "patients first name",
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "description": "patients last name",
+                    },
+                },
+                "required": ["first_name", "last_name"],
+            },
+        }
+    },
 ]
 
 available_functions = {
             "get_appointments": get_appointments,
             "table_dml": table_dml,
+            "generate_patient_medical_record_numbers": generate_patient_medical_record_numbers,
         }
 
 def tool_call(messages, response_message, tool_calls):
@@ -186,6 +262,12 @@ def tool_call(messages, response_message, tool_calls):
                 function_response = function_to_call(
                     dml=function_args.get("dml"),
                 )
+            elif function_name == 'generate_patient_medical_record_numbers':
+                function_response = function_to_call(
+                    first_name=function_args.get("first_name"),
+                    last_name=function_args.get("last_name"),
+                )
+            print(function_response)
             messages.append(
                 {
                     "tool_call_id": tool_call.id,
@@ -194,12 +276,9 @@ def tool_call(messages, response_message, tool_calls):
                     "content": function_response,
                 }
             )
-
+            
             second_response = chat_completion_request(messages, temperature=0, tools=tools, tool_choice="auto")
-
-            if second_response == "Unable to generate ChatCompletion response":
-                return "Not found"
-
+            print(f"second_response: {second_response}")
             bot_response = second_response.choices[0].message.content
 
     return bot_response
