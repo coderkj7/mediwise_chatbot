@@ -13,9 +13,14 @@ CREATE TABLE patients (
     patient_name VARCHAR(50) NOT NULL,
     date_of_birth DATE NOT NULL,
     medical_record_number VARCHAR(50) NOT NULL,
-    symptoms VARCHAR(50) NOT NULL,
-    doctor_type_requested  VARCHAR(50) NOT NULL
+    symptoms VARCHAR(50) NULL,
+    doctor_type_requested  VARCHAR(50) NULL,
+    chat_summary TEXT,
+    consent BOOLEAN DEFAULT False
 );
+CREATE UNIQUE INDEX idx_patients
+ON patients(medical_record_number);
+
 
 
 CREATE TABLE appointments (
@@ -52,40 +57,40 @@ VALUES
 ('Dr.NancyHill','FamilyMedicine','Mon-Fri9am-5pm','FamilyMedicineBuilding','True');
 
 
-INSERT INTO patients (patient_name, date_of_birth,medical_record_number, symptoms, doctor_type_requested) 
+INSERT INTO patients (patient_name, date_of_birth,medical_record_number, symptoms, doctor_type_requested, chat_summary, consent) 
 VALUES 
-('JohnSmith','1985-06-15','MRN123456','Headache,nausea','Neurologist'),
-('EmilyJohnson','1990-03-22','MRN123457','Cough,fever','Pulmonologist'),
-('MichaelBrown','1978-12-30','MRN123458','Chestpain','Cardiologist'),
-('JessicaDavis','1982-01-05','MRN123459','Jointpain,swelling','Rheumatologist'),
-('DavidWilson','1995-07-19','MRN123460','Abdominalpain','Gastroenterologist'),
-('SarahMiller','1988-09-25','MRN123461','Fatigue,weightloss','Endocrinologist'),
-('DanielGarcia','1975-11-11','MRN123462','Skinrash,itching','Dermatologist'),
-('LauraMartinez','1992-05-16','MRN123463','Shortnessofbreath','Pulmonologist'),
-('JamesRodriguez','1980-04-02','MRN123464','Dizziness,fainting','Cardiologist'),
-('PatriciaHernandez','1983-08-30','MRN123465','Backpain','Orthopedic'),
-('RobertLee','1970-02-14','MRN123466','Nausea,vomiting','Gastroenterologist'),
-('LindaWalker','1991-10-10','MRN123467','Anxiety,insomnia','Psychiatrist'),
-('CharlesHall','1986-12-01','MRN123468','Visionchanges','Ophthalmologist'),
-('SusanAllen','1979-07-27','MRN123469','Hearingloss','Audiologist'),
-('JosephYoung','1994-03-03','MRN123470','Throatpain','ENTSpecialist'),
-('KarenKing','1987-05-20','MRN123471','Moodswings','Psychiatrist'),
-('ThomasWright','1981-08-12','MRN123472','Highbloodpressure','Cardiologist'),
-('NancyScott','1993-04-28','MRN123473','Allergicreaction','Allergist'),
-('DanielGreen','1984-11-21','MRN123474','Fatigue,headaches','Neurologist'),
-('BarbaraAdams','1976-09-09','MRN123475','Chesttightness','Cardiologist'),
-('MatthewNelson','1990-06-07','MRN123476','Jointstiffness','Rheumatologist'),
-('JessicaCarter','1989-02-18','MRN123477','Persistentcough','Pulmonologist'),
-('BrianMitchell','1980-01-30','MRN123478','Severeabdominalpain','Gastroenterologist'),
-('AngelaPerez','1995-10-05','MRN123479','Skinlesions','Dermatologist'),
-('KevinRoberts','1974-12-12','MRN123480','Frequentheadaches','Neurologist'),
-('MeganTurner','1988-03-15','MRN123481','Weightgain,fatigue','Endocrinologist'),
-('EdwardPhillips','1992-08-22','MRN123482','Numbnessinlimbs','Neurologist'),
-('AshleyCampbell','1981-04-06','MRN123483','Severefatigue','Endocrinologist'),
-('ChristopherParker','1979-09-29','MRN123484','Chestpain,sweating','Cardiologist'),
-('MichelleEvans','1993-01-11','MRN123485','Severeanxiety','Psychiatrist'),
-('JoshuaEdwards','1986-07-14','MRN123486','Difficultybreathing','Pulmonologist'),
-('SamanthaCollins','1991-11-18','MRN123487','Nausea,dizziness','Gastroenterologist'),
-('RyanStewart','1984-05-27','MRN123488','Jointpain','Rheumatologist'),
-('LauraSanchez','1990-10-30','MRN123489','Skinirritation','Dermatologist'),
-('NicholasMorris','1977-02-20','MRN123490','Severeheadaches','Neurologist');
+('JohnSmith','1985-06-15','MRN123456','Headache,nausea','Neurologist', NULL, 'False'),
+('EmilyJohnson','1990-03-22','MRN123457','Cough,fever','Pulmonologist', NULL, 'False'),
+('MichaelBrown','1978-12-30','MRN123458','Chestpain','Cardiologist', NULL, 'False'),
+('JessicaDavis','1982-01-05','MRN123459','Jointpain,swelling','Rheumatologist', NULL, 'False'),
+('DavidWilson','1995-07-19','MRN123460','Abdominalpain','Gastroenterologist', NULL, 'False'),
+('SarahMiller','1988-09-25','MRN123461','Fatigue,weightloss','Endocrinologist', NULL, 'False'),
+('DanielGarcia','1975-11-11','MRN123462','Skinrash,itching','Dermatologist', NULL, 'False'),
+('LauraMartinez','1992-05-16','MRN123463','Shortnessofbreath','Pulmonologist', NULL, 'False'),
+('JamesRodriguez','1980-04-02','MRN123464','Dizziness,fainting','Cardiologist', NULL, 'False'),
+('PatriciaHernandez','1983-08-30','MRN123465','Backpain','Orthopedic', NULL, 'False'),
+('RobertLee','1970-02-14','MRN123466','Nausea,vomiting','Gastroenterologist', NULL, 'False'),
+('LindaWalker','1991-10-10','MRN123467','Anxiety,insomnia','Psychiatrist', NULL, 'False'),
+('CharlesHall','1986-12-01','MRN123468','Visionchanges','Ophthalmologist', NULL, 'False'),
+('SusanAllen','1979-07-27','MRN123469','Hearingloss','Audiologist', NULL, 'False'),
+('JosephYoung','1994-03-03','MRN123470','Throatpain','ENTSpecialist', NULL, 'False'),
+('KarenKing','1987-05-20','MRN123471','Moodswings','Psychiatrist', NULL, 'False'),
+('ThomasWright','1981-08-12','MRN123472','Highbloodpressure','Cardiologist', NULL, 'False'),
+('NancyScott','1993-04-28','MRN123473','Allergicreaction','Allergist', NULL, 'False'),
+('DanielGreen','1984-11-21','MRN123474','Fatigue,headaches','Neurologist', NULL, 'False'),
+('BarbaraAdams','1976-09-09','MRN123475','Chesttightness','Cardiologist', NULL, 'False'),
+('MatthewNelson','1990-06-07','MRN123476','Jointstiffness','Rheumatologist', NULL, 'False'),
+('JessicaCarter','1989-02-18','MRN123477','Persistentcough','Pulmonologist', NULL, 'False'),
+('BrianMitchell','1980-01-30','MRN123478','Severeabdominalpain','Gastroenterologist', NULL, 'False'),
+('AngelaPerez','1995-10-05','MRN123479','Skinlesions','Dermatologist', NULL, 'False'),
+('KevinRoberts','1974-12-12','MRN123480','Frequentheadaches','Neurologist', NULL, 'False'),
+('MeganTurner','1988-03-15','MRN123481','Weightgain,fatigue','Endocrinologist', NULL, 'False'),
+('EdwardPhillips','1992-08-22','MRN123482','Numbnessinlimbs','Neurologist', NULL, 'False'),
+('AshleyCampbell','1981-04-06','MRN123483','Severefatigue','Endocrinologist', NULL, 'False'),
+('ChristopherParker','1979-09-29','MRN123484','Chestpain,sweating','Cardiologist', NULL, 'False'),
+('MichelleEvans','1993-01-11','MRN123485','Severeanxiety','Psychiatrist', NULL, 'False'),
+('JoshuaEdwards','1986-07-14','MRN123486','Difficultybreathing','Pulmonologist', NULL, 'False'),
+('SamanthaCollins','1991-11-18','MRN123487','Nausea,dizziness','Gastroenterologist', NULL, 'False'),
+('RyanStewart','1984-05-27','MRN123488','Jointpain','Rheumatologist', NULL, 'False'),
+('LauraSanchez','1990-10-30','MRN123489','Skinirritation','Dermatologist', NULL, 'False'),
+('NicholasMorris','1977-02-20','MRN123490','Severeheadaches','Neurologist', NULL, 'False');
